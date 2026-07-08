@@ -1,298 +1,347 @@
-# 📦 Predicting Late Delivery Risk in E-Commerce Supply Chains
+# 🚚 Late Delivery Risk Prediction in Supply Chain Operations
 
-## 📌 Project Overview
+### End-to-End Machine Learning Project | Classification | Streamlit Deployment | Business Analytics
 
-In the modern e-commerce landscape, efficient logistics and supply chain management are critical to maintaining customer satisfaction and operational profitability. This project provides a Machine Learning-driven solution to identify and predict the risk of late deliveries before an order is shipped. The solution includes an end-to-end ML pipeline, from data preprocessing and model development to a business-friendly Streamlit deployment.
-
----
-
-## 🏢 Business Problem
-
-Delivery delays are a major challenge in e-commerce supply chains, directly affecting customer satisfaction, brand reputation, and overall business performance. Unanticipated delays often result in increased customer service costs, refunds, operational inefficiencies, and reduced customer retention.
+Predict delivery delays before shipment using Machine Learning and help logistics teams make proactive, data-driven decisions.
 
 ---
 
-## 🎯 Project Objectives
+## 🌍 Business Problem
 
-- Predict the probability of a late delivery using Machine Learning.
-- Identify high-risk orders before shipment.
-- Support proactive logistics planning and customer communication.
-- Provide a user-friendly Streamlit dashboard for business users.
-- Demonstrate an end-to-end Data Science workflow from EDA to deployment.
+In today's e-commerce ecosystem, customers expect fast and reliable deliveries. However, unexpected shipment delays can lead to:
+
+- Reduced customer satisfaction
+- Increased operational costs
+- Negative brand perception
+- Customer churn and revenue loss
+
+Organizations often react to delays after they occur.
+
+This project focuses on predicting **Late Delivery Risk** before shipment, enabling businesses to take preventive actions and improve logistics performance.
 
 ---
 
-## 📊 Dataset Information
+## 🎯 Project Goal
+
+Build a Machine Learning system capable of predicting whether an order will be delivered:
+
+✅ On Time
+
+❌ Late
+
+The solution helps logistics teams identify high-risk shipments early and improve operational planning.
+
+---
+
+## 📊 Dataset Overview
 
 **Dataset:** DataCo Smart Supply Chain Dataset
 
 | Attribute | Value |
 |------------|--------|
 | Records | 180,519 |
-| Features Used for Modeling | 24 |
+| Original Features | 53 |
+| Numerical Features | 14 |
+| Categorical Features | 10 |
 | Problem Type | Binary Classification |
-| Target Variable | Late_delivery_risk |
+| Target Variable | `Late_delivery_risk` |
 
-### Key Features
+### Target Classes
 
-- Shipping Mode
-- Customer Segment
-- Customer Country
-- Department Name
-- Category Name
-- Order Region
-- Market
-- Product Price
-- Order Quantity
-- Benefit per Order
-- Sales per Customer
-- Order Item Total
-- Latitude & Longitude
+| Value | Meaning |
+|---------|---------|
+| 0 | On-Time Delivery |
+| 1 | Late Delivery |
 
 ---
 
-## 🛠️ Technology Stack
+# 🏗️ Project Architecture
+
+```text
+Raw Supply Chain Data
+          │
+          ▼
+Data Understanding
+          │
+          ▼
+Exploratory Data Analysis
+          │
+          ▼
+Train-Test Split
+          │
+          ▼
+Data Preprocessing
+ ├── RobustScaler
+ └── OneHotEncoder
+          │
+          ▼
+Feature Selection
+          │
+          ▼
+Model Training
+ ├── KNN
+ ├── Gaussian Naive Bayes
+ └── Decision Tree
+          │
+          ▼
+Hyperparameter Tuning
+          │
+          ▼
+Model Evaluation
+          │
+          ▼
+Streamlit Deployment
+```
+
+---
+
+# 🔍 Exploratory Data Analysis
+
+EDA was performed to understand delivery behavior and uncover business insights.
+
+### Key Findings
+
+📦 Shipping mode significantly influences delivery performance.
+
+🌎 Geographic location plays an important role in delivery risk.
+
+💰 Profit and sales-related variables impact shipment outcomes.
+
+📈 Certain features show strong relationships with delivery delays.
+
+---
+
+# ⚙️ Data Preprocessing
+
+To ensure reliable model performance, a complete preprocessing pipeline was developed.
+
+### Numerical Features
+
+Applied:
+
+- RobustScaler
+
+Why?
+
+- Resistant to outliers
+- Uses Median and IQR
+- Suitable for real-world business data
+
+### Categorical Features
+
+Applied:
+
+- OneHotEncoder
+
+Why?
+
+- Prevents false ordinal relationships
+- Handles nominal categories effectively
+
+### Pipeline
+
+Implemented using:
+
+```python
+ColumnTransformer
+```
+
+Final transformed dataset:
+
+```python
+Train Shape : (144415, 325)
+
+Test Shape  : (36104, 325)
+```
+
+---
+
+# 🎯 Feature Selection
+
+Feature Selection was performed using:
+
+```python
+SelectKBest(score_func=mutual_info_classif)
+```
+
+### Most Important Features
+
+- Latitude
+- Longitude
+- Shipping Mode
+- Benefit per Order
+- Order Profit Per Order
+- Sales per Customer
+- Order Item Total
+
+This step helped improve model efficiency and interpretability.
+
+---
+
+# 🤖 Machine Learning Models
+
+The following classification algorithms were trained and evaluated:
+
+| Model | Description |
+|---------|-------------|
+| K-Nearest Neighbors | Distance-based classifier |
+| Gaussian Naive Bayes | Probabilistic classifier |
+| Decision Tree | Rule-based classifier |
+
+---
+
+# ⚡ Hyperparameter Tuning
+
+To improve model performance and reduce overfitting, hyperparameter tuning was performed using:
+
+```python
+RandomizedSearchCV
+```
+
+### Best Parameters
+
+```python
+max_depth = 25
+
+min_samples_split = 5
+
+min_samples_leaf = 2
+```
+
+---
+
+# 🏆 Final Model Performance
+
+### Best Model: Decision Tree Classifier
+
+| Metric | Score |
+|----------|----------|
+| Accuracy | 75.46% |
+| ROC-AUC Score | 0.7553 |
+| Precision | 0.78 |
+| Recall | 0.78 |
+| F1 Score | 0.78 |
+
+---
+
+# 📈 Confusion Matrix
+
+| Actual / Predicted | On-Time | Late |
+|-------------------|----------|---------|
+| On-Time | 11846 | 4462 |
+| Late | 4399 | 15397 |
+
+---
+
+# 💡 Business Impact
+
+The model can help organizations:
+
+✅ Identify high-risk deliveries before shipment
+
+✅ Improve logistics planning
+
+✅ Reduce customer complaints
+
+✅ Optimize shipment prioritization
+
+✅ Improve operational efficiency
+
+✅ Support data-driven supply chain decisions
+
+---
+
+# 🚀 Live Application
+
+A production-ready Streamlit application was developed to demonstrate real-time predictions.
+
+### Features
+
+- Real-Time Predictions
+- Interactive Dashboard
+- Automated Preprocessing
+- User-Friendly Interface
+- Instant Delivery Risk Assessment
+
+### Live Demo
+
+🔗 https://late-delivery-risk-predictor-6iyq2e2lchacb4p6uibmk5.streamlit.app/
+
+---
+
+# 🛠️ Technology Stack
 
 ### Programming
+
 - Python
 
 ### Data Analysis
+
 - Pandas
 - NumPy
 
-### Visualization
+### Data Visualization
+
 - Matplotlib
 - Seaborn
 
 ### Machine Learning
+
 - Scikit-Learn
 
-### Model Serialization
-- Joblib
-
 ### Deployment
+
 - Streamlit
 
----
+### Model Serialization
 
-## ⚙️ Machine Learning Workflow
-
-### 1. Data Cleaning
-- Removed irrelevant and leakage-prone columns
-- Removed operational fields unavailable at prediction time
-
-### 2. Missing Value Handling
-- Treated missing values using appropriate preprocessing techniques
-
-### 3. Outlier Treatment
-- Analyzed and handled outliers in financial and sales-related variables
-
-### 4. Feature Engineering
-- One-Hot Encoding for categorical variables
-- Standardization of numerical variables
-- ColumnTransformer pipeline implementation
-
-### 5. Feature Selection
-- Applied SelectKBest for feature importance analysis
-
-### 6. Train-Test Split
-- Stratified Train-Test Split
-- Preserved class distribution
-
-### 7. Model Building
-
-The following algorithms were trained and evaluated:
-
-- K-Nearest Neighbors (KNN)
-- Gaussian Naive Bayes
-- Decision Tree Classifier
-
-### 8. Hyperparameter Tuning
-
-- RandomizedSearchCV
-- Tree depth optimization
-- Split criteria tuning
-- Regularization tuning
-
-### 9. Model Evaluation
-
-Evaluation Metrics:
-
-- Accuracy
-- Confusion Matrix
-- Classification Report
-- ROC-AUC Score
-
-### 10. Deployment
-
-- Model exported using Joblib
-- Streamlit application developed for real-time prediction
+- Joblib
 
 ---
 
-## 🤖 Models Evaluated
-
-| Model | Test Accuracy |
-|---------|--------------|
-| K-Nearest Neighbors (KNN) | ~63% |
-| Gaussian Naive Bayes | ~58% |
-| Decision Tree (Baseline) | ~75% |
-| Decision Tree (Tuned) | ~71% |
-
----
-
-## 🏆 Final Model Selection
-
-The baseline Decision Tree model achieved the highest test accuracy and demonstrated strong predictive performance on unseen data.
-
-Although the tuned model reduced overfitting, its test accuracy was lower than the baseline model. Therefore, the baseline Decision Tree was selected as the final deployed model for this academic project.
-
----
-
-## 📈 Key Insights
-
-- Shipping Mode significantly influences delivery risk.
-- Geographic location (Latitude & Longitude) contributes to prediction performance.
-- Order profitability and sales-related variables impact delivery outcomes.
-- Different markets and regions exhibit varying delivery risk patterns.
-
----
-
-## 💡 Business Recommendations
-
-### 🔴 High Risk Orders
-
-Recommended Actions:
-
-- Prioritize shipment processing
-- Monitor logistics operations closely
-- Communicate proactively with customers
-- Review delivery routes and operational bottlenecks
-
-### 🟡 Medium Risk Orders
-
-Recommended Actions:
-
-- Monitor warehouse processing timelines
-- Ensure timely dispatch
-- Track order progress proactively
-
-### 🟢 Low Risk Orders
-
-Recommended Actions:
-
-- Continue standard logistics operations
-- Maintain regular shipment monitoring
-
----
-
-## 🖥️ Streamlit Deployment
-
-A business-friendly Streamlit dashboard was developed to demonstrate real-time delivery risk prediction.
-
-### Features
-
-- User-friendly business interface
-- Real-time predictions
-- Risk probability estimation
-- Executive summary generation
-- Operational recommendations
-- Automated handling of technical model inputs
-
----
-
-## 📁 Project Structure
+# 📂 Repository Structure
 
 ```text
-dataco-late-delivery-risk-prediction/
+Late-Delivery-Risk-Prediction/
 │
-├── DataCo_Late_Delivery_Risk_Prediction.ipynb
-├── DataCoSupplyChainDataset.csv
+├── notebook/
+│   └── DataCo_Late_Delivery_Risk_Prediction.ipynb
+│
 ├── app.py
 ├── requirements.txt
-├── README.md
 ├── late_delivery_model.pkl
 ├── preprocessor.pkl
-└── .gitignore
+├── README.md
+└── assets/
 ```
 
 ---
 
-## 🚀 Installation & Setup
+# 🔮 Future Enhancements
 
-### Clone Repository
-
-```bash
-git clone https://github.com/your-username/dataco-late-delivery-risk-prediction.git
-cd dataco-late-delivery-risk-prediction
-```
-
-### Create Virtual Environment
-
-```bash
-python -m venv venv
-```
-
-### Activate Environment
-
-**Windows**
-
-```bash
-venv\Scripts\activate
-```
-
-**Linux / Mac**
-
-```bash
-source venv/bin/activate
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Run Streamlit Application
-
-```bash
-streamlit run app.py
-```
-
-The application will open at:
-
-```text
-http://localhost:8501
-```
-
----
-
-## 🔮 Future Improvements
-
-- Random Forest Implementation
-- XGBoost Implementation
-- Advanced Feature Engineering
-- Feature Correlation Reduction
-- MLOps Monitoring
-- Data Drift Detection
+- Random Forest & XGBoost Models
+- Real-Time Shipment Tracking Integration
+- Automated Model Monitoring
 - Docker Containerization
-- AWS Deployment
-- Hugging Face Spaces Deployment
+- Cloud Deployment (AWS/Azure)
+- MLOps Pipeline Integration
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 About Me
 
-**Sai Sourav Panigrahi**
+### Sai Sourav Panigrahi
 
-Data Science Program – Innomatics Research Labs  
-Batch: 501
+Aspiring Data Scientist passionate about solving real-world business problems using Machine Learning, Data Analytics, and AI.
 
 ### Connect With Me
 
-- LinkedIn: Add Your LinkedIn URL
-- GitHub: Add Your GitHub URL
+🔗 LinkedIn  
+https://www.linkedin.com/in/saisourav-panigrahi/
+
+🔗 GitHub  
+(Add Your GitHub Profile Link)
 
 ---
 
-⭐ If you found this project useful, consider giving it a star on GitHub.
+### ⭐ If you found this project valuable, consider giving the repository a star.
